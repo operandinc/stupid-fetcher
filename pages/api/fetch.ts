@@ -29,6 +29,7 @@ export default async function handler(
     res.status(400).json({ error: "invalid request url" });
     return;
   }
+  const start = new Date().getTime();
   var content;
   try {
     const browser = await core.launch({
@@ -51,5 +52,6 @@ export default async function handler(
     res.status(500).json({ error: "error occured while fetching; see console output" });
     return;
   }
+  console.log("Fetched %s in %dms.", body.url, new Date().getTime() - start);
   res.status(200).json({ content });
 }
