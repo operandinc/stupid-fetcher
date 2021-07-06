@@ -1,3 +1,5 @@
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template?template=https%3A%2F%2Fgithub.com%2Foperandinc%2Fstupid-fetcher&envs=SECRET%2CENVIRONMENT&SECRETDesc=Do+CMD%2BK+-%3E+Generate+32+Character+Secret.&ENVIRONMENTDesc=This+should+be+set+to+%60production%60+when+running+on+Railway.&SECRETDefault=a+super+secret+key&ENVIRONMENTDefault=production)
+
 It's really stupid that I need a headless browser to do a GET request in 2021.
 
 Required Environment Variables:
