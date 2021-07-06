@@ -6,7 +6,6 @@ const Index = () => {
         request in 2021. Why can&apos;t we go back to the good ol&apos; days of
         pure HTML / CSS websites? It would be a whole hell of a lot cleaner.
       </p>
-      <br />
       <p>~ M</p>
     </div>
   );
