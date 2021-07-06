@@ -13,7 +13,7 @@ type RequestBody = {
 
 type ResponseBody = {
   content?: string;
-  error?: any;
+  error?: string;
 };
 
 export default async function handler(
@@ -47,7 +47,8 @@ export default async function handler(
     content = await page.evaluate(() => document.querySelector("*")?.outerHTML);
     await browser.close();
   } catch (err) {
-    res.status(500).json({ error: err });
+    console.warn(err);
+    res.status(500).json({ error: "error occured while fetching; see console output" });
     return;
   }
   res.status(200).json({ content });
