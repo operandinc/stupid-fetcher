@@ -16,6 +16,27 @@ type ResponseBody = {
   error?: string;
 };
 
+let _page: core.Page | null;
+
+async function getPage() {
+  if (_page) {
+    return _page;
+  }
+  const browser = await core.launch({
+    args: inProduction ? ["--no-sandbox", "--font-render-hinting=none"] : [],
+    executablePath: inProduction
+      ? "/usr/bin/chromium-browser"
+      : process.platform === "win32"
+      ? "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+      : process.platform === "linux"
+      ? "/usr/bin/google-chrome"
+      : "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    headless: true,
+  });
+  _page = await browser.newPage();
+  return _page;
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseBody>
@@ -32,21 +53,9 @@ export default async function handler(
   const start = new Date().getTime();
   var content;
   try {
-    const browser = await core.launch({
-      args: inProduction ? ["--no-sandbox", "--font-render-hinting=none"] : [],
-      executablePath: inProduction
-        ? "/usr/bin/chromium-browser"
-        : process.platform === "win32"
-        ? "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
-        : process.platform === "linux"
-        ? "/usr/bin/google-chrome"
-        : "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-      headless: true,
-    });
-    const page = await browser.newPage();
+    const page = await getPage();
     await page.goto(body.url, { waitUntil: "networkidle0" });
     content = await page.evaluate(() => document.querySelector("*")?.outerHTML);
-    await browser.close();
   } catch (err) {
     console.warn(err);
     res.status(500).json({ error: "error occured while fetching; see console output" });
